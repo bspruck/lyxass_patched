@@ -204,6 +204,7 @@ LABEL * DefineLabel(LABEL *l, int *solved)
 	    ptr->line = l->line;
 	    ptr->file = l->file;
 	    ptr->value = l->value;
+	    ptr->srcptr = l->srcptr;
 	    return ptr;
 	    //	    Error(REDEF_ERR,(char *) ptr);
 	    //	    return NULL;

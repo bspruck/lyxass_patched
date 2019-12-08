@@ -50,7 +50,9 @@ int DefineMacro(char *s)
   strcpy(macroName.name,s);
   macroName.line = Current.Line;
   macroName.file = Current.File;
-  macroName.value = (long) Current.SrcPtr;
+  macroName.srcptr = Current.SrcPtr;
+//     printf("===== set macro ptr %p ====\n",Current.SrcPtr);
+  macroName.value = 0;
   macroName.type = MACRO;
   Current.Macro.Define=1;
 
@@ -147,7 +149,8 @@ int CheckMacro(char * s)
     Current.File = macro->file;
     Current.Macro.Name = macro->name;
     Current.Macro.invoked = ++macro->count;
-    Current.SrcPtr = ((char *)macro->value);
+    Current.SrcPtr = macro->srcptr;
+//     printf("===== set ptr %p ====\n",macro->srcptr);
 
     memset((char *)macrovars[Current.Macro.Processing],0,16*80);
 

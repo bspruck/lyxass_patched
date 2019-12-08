@@ -18,6 +18,7 @@ typedef struct label_s{
   int len;
   int type;
   long value;
+  char *srcptr;
   int line;
   int file;
   int count;
