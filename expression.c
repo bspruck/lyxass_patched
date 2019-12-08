@@ -200,7 +200,7 @@ int uni(long *value)
       
       GetAtom();
       if ( !GetString(help, '"') ){
-	Error(SYNTAX_ERR,"");
+	Error(SYNTAX_ERR, __FUNCTION__ );
 	return EXPR_ERROR;
       }
       while ( *ptr && --i){

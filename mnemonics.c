@@ -95,7 +95,7 @@ int op3(int op)
   int komma = 0;
 
   if ( ! KillSpace() ){
-    return Error(SYNTAX_ERR,"");
+    return Error(SYNTAX_ERR, __FUNCTION__ );
   }
 
   // immediate 
@@ -105,7 +105,7 @@ int op3(int op)
     if ( (err = Expression(&l)) == EXPR_ERR) return 1;
 
     if ( l < -128 || l > 255 ) return Error(BYTE_ERR,"");
-    if ( op == 0x81 ) return Error(SYNTAX_ERR,""); // STA #0 not possible
+    if ( op == 0x81 ) return Error(SYNTAX_ERR, __FUNCTION__ ); // STA #0 not possible
     writeByte(op | 0x08);
     writeByte((char)l);
     if ( err == EXPR_UNSOLVED ) saveCurrentLine();
@@ -125,16 +125,16 @@ int op3(int op)
     if ( l < 0 || l > 255 ) return Error(BYTE_ERR,"");
 
     if ( TestAtom(',') ){
-      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR,"");
+      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       komma = 1;
       CYCLES += 6;
     }
-    if ( !TestAtom(')') ) return Error(SYNTAX_ERR,"");
+    if ( !TestAtom(')') ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
     if ( !komma ) {
       if ( TestAtom(',') ){
 	CYCLES += 5;
-	if ( !TestAtomOR('y','Y') ) return Error(SYNTAX_ERR,"");
+	if ( !TestAtomOR('y','Y') ) return Error(SYNTAX_ERR, __FUNCTION__ );
 	op |= 0x10;
       } else {
 	op |= 0x12;
@@ -164,7 +164,7 @@ int op3(int op)
       writeWordLittle((short)l);
       if ( err == EXPR_UNSOLVED ) saveCurrentLine();
       return 0;
-    } else return Error(SYNTAX_ERR,"");
+    } else return Error(SYNTAX_ERR, __FUNCTION__ );
   } else {
     op |= 0x04;
   }
@@ -222,7 +222,7 @@ int op5(int op)
   
   if ( TestAtom(',') ) {
 
-    if ( !TestAtomOR('x','X') ) Error(SYNTAX_ERR,"");
+    if ( !TestAtomOR('x','X') ) Error(SYNTAX_ERR, __FUNCTION__ );
 
     if (l > 255 || err == EXPR_UNSOLVED || Current.pass2 ){
       writeByte( op | 0x9a );
@@ -262,7 +262,7 @@ int op6(int op)
   if ( TestAtom(',') ) {
     if ( l > 255 || err == EXPR_UNSOLVED || Current.pass2 ) return Error(BYTE_ERR,"");
 
-    if ( !TestAtomOR('y','Y') ) Error(SYNTAX_ERR,"");
+    if ( !TestAtomOR('y','Y') ) Error(SYNTAX_ERR, __FUNCTION__ );
     CYCLES += 4;
     writeByte(op | 0x10);
     writeByte((char)l);
@@ -296,7 +296,7 @@ int op7(int op)
 
     if ( l > 255 || err == EXPR_UNSOLVED || Current.pass2 ) return Error(BYTE_ERR,"");
 
-    if ( !TestAtomOR('x','X') ) Error(SYNTAX_ERR,"");
+    if ( !TestAtomOR('x','X') ) Error(SYNTAX_ERR, __FUNCTION__ );
     CYCLES += 4;
     writeByte(op | 0x10);
     writeByte((char)l);
@@ -341,8 +341,8 @@ int op8(int op)
       CYCLES++;
     }
     if ( TestAtom(',') ){
-      if ( (op & 0xc0) == 0xc0) return Error(SYNTAX_ERR,"");                     // no cpy ABCD,x !!!
-      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR,"");
+      if ( (op & 0xc0) == 0xc0) return Error(SYNTAX_ERR, __FUNCTION__ );                     // no cpy ABCD,x !!!
+      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       op |= 0x10;
       CYCLES++;
     }
@@ -385,7 +385,7 @@ int op9(int op)
       ++CYCLES;
     }
     if ( TestAtom(',') ){
-      if ( !TestAtomOR('y','Y') ) return Error(SYNTAX_ERR,"");
+      if ( !TestAtomOR('y','Y') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       op |= 0x10;
       ++CYCLES;
     }
@@ -426,14 +426,14 @@ int opa(int op)
     ++CYCLES;
     op |= 0x0a;
     if ( TestAtom(',') ){
-      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR,"");
+      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       op |= 0x10;
     }
     writeByte(op);
     writeWordLittle((short)l);
   } else {
     if ( TestAtom(',') ){
-      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR,"");
+      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       op |= 0x10;
       ++CYCLES;
     }
@@ -473,10 +473,10 @@ int opc(int op)
     if ( l < 0 || l > 65535 ) return Error(WORD_ERR,"");
     op |= 0x20;
     if ( TestAtom(',') ){
-      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR,"");
+      if ( !TestAtomOR('x','X') ) return Error(SYNTAX_ERR, __FUNCTION__ );
       op |= 0x10;
     }
-    if ( !TestAtom(')') ) return Error(SYNTAX_ERR,"");
+    if ( !TestAtom(')') ) return Error(SYNTAX_ERR, __FUNCTION__ );
     CYCLES += 6;
   } else {
     if ( (err = Expression( &l )) == EXPR_ERROR ) return 1;
@@ -499,7 +499,7 @@ int opd(int op)
   int err;
   long l;
 
-  if ( !TestAtom('#') ) return Error(SYNTAX_ERR,"");
+  if ( !TestAtom('#') ) return Error(SYNTAX_ERR, __FUNCTION__ );
     
   if ( (err = Expression( &l )) == EXPR_ERROR ) return 1;
   if ( l < -128 || l > 255 ) return Error(BYTE_ERR,"");

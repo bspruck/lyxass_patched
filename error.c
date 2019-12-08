@@ -5,6 +5,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "my.h"
 #include "label.h"
@@ -31,9 +32,9 @@ int Error(int err_num,char s[])
 
    if (Current.File >= 0){
     if ( Current.Macro.Line ){
-      fprintf(my_stderr,"%s;%d:ERROR:Macro-Line %5d:<%s>\n",
+      fprintf(my_stderr,"%s;%d:ERROR:Macro-Line %5d:<%s><%s>\n",
 	      file_list[Current.File].name,Current.Line,
-	      Current.Macro.Line,file_list[Current.Macro.File].name);
+	      Current.Macro.Line,file_list[Current.Macro.File].name,s);
     }else{
       fprintf(my_stderr,"%s:%5d:ERROR:\n",file_list[Current.File].name,Current.Line);
     }
@@ -46,7 +47,7 @@ int Error(int err_num,char s[])
     fprintf(my_stderr,"Can't open file <%s> !\n",s);
     break;
   case LABEL_ERR:
-    fprintf(my_stderr,"Wrong character in label !\n");
+    fprintf(my_stderr,"Wrong character in label!\n");
     break;
   case MLABEL_ERR:
     fprintf(my_stderr,"Macro-label outside macro !\n");

@@ -1,12 +1,17 @@
 
+#CC=cc
 CC=gcc
-CFLAGS= -Wall -pedantic -O2 -fomit-frame-pointer # -m486
+#CC=clang
+
+CFLAGS= -Wall -pedantic -O2 -fomit-frame-pointer
 LDFLAGS= -s
+#CFLAGS= -Wall -g -pedantic -O2 -fomit-frame-pointer
+#LDFLAGS= -g
 
 all: lyxass
 
 
-.c.o: 
+.c.o:
 	$(CC) $(CFLAGS) -c $<
 
 OBJECTS: lyxass.o parser.o debug.o label.o\

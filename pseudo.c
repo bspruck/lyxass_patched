@@ -73,7 +73,7 @@ int p_org(int d)
   if ( (err = NeedConst( &l, "ORG" )) ) return err;
 
   if ( Global.genesis == 1 ){
-    if ( l < Global.pc ) return Error(SYNTAX_ERR,"");
+    if ( l < Global.pc ) return Error(SYNTAX_ERR, "ORG after RUN with negative offset");
     writeSameBytes( 0, l-Global.pc );
   } else {
     Global.pc = l;
@@ -101,6 +101,7 @@ int p_run(int d)
     Global.mainMode = sourceMode;
     Global.run = l;
     Global.genesis = 1;
+    printf("=== switched global genesis ON == \n");
   }
   Global.pc = l;
   return 0;
@@ -189,10 +190,10 @@ int p_definebyte(int d)
   int all_err = 0;
 
   KillSpace();
-  if ( atom == EOF ) return Error(SYNTAX_ERR,"");
+  if ( atom == EOF ) return Error(SYNTAX_ERR, __FUNCTION__ );
   do{
     if ( TestAtom('"') ){
-      if ( !GetString( help ,'"' ) ) return Error(SYNTAX_ERR,"");
+      if ( !GetString( help ,'"' ) ) return Error(SYNTAX_ERR, __FUNCTION__ );
       if ( d ){
 	translate(help);
       }
@@ -222,7 +223,7 @@ int p_defineword(int d)
   int all_err = 0;
 
   KillSpace();
-  if ( atom == EOF ) return Error(SYNTAX_ERR,"");
+  if ( atom == EOF ) return Error(SYNTAX_ERR, __FUNCTION__ );
   do{
     if ( (err = Expression( &l )) == EXPR_ERROR ) return 1;
     if ( err == EXPR_UNSOLVED ) ++all_err;
@@ -249,7 +250,7 @@ int p_definelong(int d)
   int all_err = 0;
 
   KillSpace();
-  if ( atom == EOF ) return Error(SYNTAX_ERR,"");
+  if ( atom == EOF ) return Error(SYNTAX_ERR, __FUNCTION__ );
   do{
     if ( (err = Expression( &l )) == EXPR_ERROR ) return 1;
     if ( err == EXPR_UNSOLVED ) ++all_err;
@@ -359,10 +360,10 @@ int p_path(int d)
     return 0;
   }
 
-  if ( atom != '"' ) return Error(SYNTAX_ERR,"");
+  if ( atom != '"' ) return Error(SYNTAX_ERR, __FUNCTION__ );
   GetAtom();
   
-  if ( !GetString( filename, '"' ) ) return Error(SYNTAX_ERR,"");
+  if ( !GetString( filename, '"' ) ) return Error(SYNTAX_ERR, __FUNCTION__ );
   
   if ( strlen(filename) && filename[(i=strlen(filename))-1] != '/'){
     filename[i] = '/';
@@ -404,7 +405,7 @@ int p_equ(int d)
 
   if ( NeedConst( &l, "EQU") ) return 1;
 
-  if ( ! Current.Label.len ) Error(SYNTAX_ERR,"");
+  if ( ! Current.Label.len ) Error(SYNTAX_ERR, __FUNCTION__ );
 
   if ( (Current.Label.type & VARIABLE) == 0){
     Current.LabelPtr->value = l;
@@ -422,7 +423,7 @@ int p_set(int d)
 
   if ( NeedConst( &l, "SET") ) return 1;
 
-  if ( ! Current.Label.len ) Error(SYNTAX_ERR,"");
+  if ( ! Current.Label.len ) Error(SYNTAX_ERR, __FUNCTION__ );
 
   Current.LabelPtr->type |= VARIABLE;
   Current.LabelPtr->value = l;
@@ -658,7 +659,7 @@ int p_echo(int d)
   LABEL label;
   long l;
 
-  if ( !TestAtom('"') ) return Error(SYNTAX_ERR,"");
+  if ( !TestAtom('"') ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
   if ( d ) fprintf(my_stderr,"FAIL: ");
   
@@ -676,7 +677,7 @@ int p_echo(int d)
 	l = 12345678;
       }
       else {
-	return Error(SYNTAX_ERR,"");
+	return Error(SYNTAX_ERR, __FUNCTION__ );
       }
       GetAtom();
 
@@ -787,7 +788,7 @@ int p_global(int d)
       label.value = Global.pc;
       DefineLabel( &label, &solved);
     } else {
-      if ( plabel->type & LOCAL ) return Error(SYNTAX_ERR,"");
+      if ( plabel->type & LOCAL ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
       plabel->type |= GLOBAL;
     }
@@ -814,13 +815,13 @@ int p_reg(int d)
   long l;
   int i,o;
 
-  if ( sourceMode == LYNX ) return Error(SYNTAX_ERR,"");
+  if ( sourceMode == LYNX ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
-  if ( ! Current.Label.len ) Error(SYNTAX_ERR,"");
+  if ( ! Current.Label.len ) Error(SYNTAX_ERR, __FUNCTION__ );
 
   if ( TestAtomOR('r','R') ){
-    if ( getdec( &l ) == EXPR_ERR ) return Error(SYNTAX_ERR,"");
-    if ( l > 31 ) return Error(SYNTAX_ERR,"");
+    if ( getdec( &l ) == EXPR_ERR ) return Error(SYNTAX_ERR, __FUNCTION__ );
+    if ( l > 31 ) return Error(SYNTAX_ERR, __FUNCTION__ );
   } else { 
     if ( NeedConst( &l, "REG") ) return 1;
   }
@@ -831,7 +832,7 @@ int p_reg(int d)
        (Current.LabelPtr->file != -1) ) return Error(REG1_ERR,"");
 
   if ( Current.LabelPtr->type != NORMAL && 
-       Current.LabelPtr->type != REGISTER ) return Error(SYNTAX_ERR,"");
+       Current.LabelPtr->type != REGISTER ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
   o = l;
   i = strlen(Current.LabelPtr->name);
@@ -868,13 +869,13 @@ int p_unreg(int d)
     if ( GetLabel( &label ) ) return 1;
     
     if ( (plabel = FindLabel( &label, &l)) == NULL ){
-      return Error(SYNTAX_ERR,"");
+      return Error(SYNTAX_ERR, __FUNCTION__ );
     } else {
       int i,o;
       
       //      printf("UNREG : %s\n",plabel->name);
 
-      if ( !(plabel->type & REGISTER) ) return Error(SYNTAX_ERR,"");
+      if ( !(plabel->type & REGISTER) ) return Error(SYNTAX_ERR, __FUNCTION__ );
       
       if ( plabel->file == -1 ){
 	char help[80];

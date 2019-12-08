@@ -10,6 +10,7 @@
  *                            "file" searches current path
  *                            <file> searches BLL_ROOT/file
  *                            'file' searches upper-case path
+ *  2017 BS                   clean up opcode search (long cast/compare of strings)                        
  */
  
 #define MAIN 1
@@ -39,7 +40,7 @@ int uni(long *);
 extern REFERENCE *refFirst;
 extern REFERENCE *refLast;
 
-char info[] = "tjass/lyxass C-version V 0.48\n(c) 1993..1999 42Bastian Schick, modified by BS 2011\n";
+char info[] = "tjass/lyxass C-version V 0.49\n(c) 1993..1999 42Bastian Schick, modified by BS 2011,2017\n";
 
 /********************************************************************/
 char *outfile = 0;

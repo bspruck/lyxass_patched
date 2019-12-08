@@ -71,7 +71,7 @@ int EndDefineMacro(){
   if ( ! DefineLabel(&macroName, &dummy) ){
     return 1;
   }
-  if ( dummy ) return Error(SYNTAX_ERR,"");
+  if ( dummy ) return Error(SYNTAX_ERR, __FUNCTION__ );
 
   return 0;
 }  

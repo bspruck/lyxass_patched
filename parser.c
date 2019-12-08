@@ -392,7 +392,7 @@ int GetLabel(LABEL *Label)
     } else {
       Label->type |= MACRO;
 
-      if ( !GetAtom() < 0 ) return Error(LABEL_ERR,"");
+      if ( !GetAtom() ) return Error(LABEL_ERR,"");
       
       if ( isalpha(atom) || atom == '_') {
 	do{
