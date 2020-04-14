@@ -199,6 +199,13 @@ int p_definebyte(int d)
       }
       writeBytes(help,strlen(help));
     }
+    else if ( TestAtom('\'') ){
+      if ( !GetString( help ,'\'' ) ) return Error(SYNTAX_ERR, __FUNCTION__ );
+      if ( d ){
+	translate(help);
+      }
+      writeBytes(help,strlen(help));
+    }
     else {
       if ( (err = Expression( &l )) == EXPR_ERROR ) return 1;
       if ( err == EXPR_UNSOLVED ) ++all_err;

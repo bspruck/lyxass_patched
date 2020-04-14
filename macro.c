@@ -89,6 +89,7 @@ int GetOperand(char * dst)
     while ( atom  && !exit ) {
       switch ( atom ){
       case  '"' :
+      case  '\'' :
 	StringFlag ^= 1;
 	*ptr++=atom;
 	break;

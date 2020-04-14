@@ -40,7 +40,7 @@ int uni(long *);
 extern REFERENCE *refFirst;
 extern REFERENCE *refLast;
 
-char info[] = "tjass/lyxass C-version V 0.50\n(c) 1993..1999 42Bastian Schick, modified by BS 2011,2017,2018\n";
+char info[] = "tjass/lyxass C-version V 0.51\n(c) 1993..1999 42Bastian Schick, modified by BS 2011,2017,2018\n";
 
 /********************************************************************/
 char *outfile = 0;

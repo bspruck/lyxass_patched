@@ -42,3 +42,7 @@ clean:
 	rm -f lyxass
 	rm -f lyxass.exe
 	rm -f *~
+
+install:
+	cp -a lyxass $(LYNX_BIN)
+

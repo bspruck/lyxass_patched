@@ -87,9 +87,19 @@ int LoadSource(char fn[])
 	    *ptr++=c;
 	    c = *ptrLine++;
 	  }
+
+	  // do not delete Space within strings
+	  if ( c == '\'' ){
+	    do{
+	      *ptr++=c;
+	      c = *ptrLine++;
+	    }while ( c && c != '\'' );
+	    *ptr++=c;
+	    c = *ptrLine++;
+	  }
 	  
 	  // else, copy anything
-	  while ( c && c != ' ' && c != ';' && c != '"'){
+	  while ( c && c != ' ' && c != ';' && c != '"' && c != '\''){
 	    *ptr++ = c;
 	    c = *ptrLine++;
 	  }
@@ -318,7 +328,7 @@ int GetFileName()
   int i;
 
   KillSpace();
-  if ( atom != '"' && atom != '<' && atom != '\'') return Error(SYNTAX_ERR,"");
+  if ( atom != '"' && atom != '\'' && atom != '<' && atom != '\'') return Error(SYNTAX_ERR,"");
   if ( atom == '<' ) 
     save = '>';
   else

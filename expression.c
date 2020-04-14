@@ -210,6 +210,24 @@ int uni(long *value)
       err = EXPR_OK;
     }
     break;
+  case '\'':
+    {
+      char help[80];
+      char *ptr = help;
+      int i = 5;
+      
+      GetAtom();
+      if ( !GetString(help, '\'') ){
+	Error(SYNTAX_ERR, __FUNCTION__ );
+	return EXPR_ERROR;
+      }
+      while ( *ptr && --i){
+	a = (a<<8)| (int)*ptr++;
+      }
+      
+      err = EXPR_OK;
+    }
+    break;
   case '(':
     GetAtom();
     err = sum( &a );
